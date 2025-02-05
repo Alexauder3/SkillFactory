@@ -1,0 +1,21 @@
+version: '3'
+services:
+  database:
+    image: mysqlbd:latest
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    command: '--init-file /data/application/init.sql'
+    ports:
+      - '3308:3306'
+    volumes:
+      - './dbfile1:/var/lib/mysql'
+      - './init.sql:/data/application/init.sql'
+  server:
+    image: reizmunt:latest
+    ports:
+      - '8000:80'
+    volumes:
+      - './src:/var/www/html'
+    depends_on:
+      - database
